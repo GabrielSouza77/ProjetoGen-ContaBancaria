@@ -1,0 +1,36 @@
+# Compilados Java
+*.class
+
+# Diretórios de build
+/build/
+/target/
+
+# Arquivos de log
+*.log
+
+# Arquivos de configuração do Eclipse
+*.classpath
+*.project
+*.settings/
+
+# Arquivos do IntelliJ IDEA
+*.iml
+.idea/
+out/
+
+# Arquivos do NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Pacotes
+*.jar
+*.war
+*.ear
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
