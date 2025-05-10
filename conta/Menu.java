@@ -1,14 +1,24 @@
-package conta.menu;
+package conta;
 
 import java.util.Scanner;
 
-public class menu {
+import conta.model.ContaCorrente;
+import conta.model.ContaPoupanca;
+
+public class Menu {
 
     public static final String RESET = "\u001B[0m";
     public static final String BLACK_BG = "\u001B[40m";
     public static final String WHITE_TEXT = "\u001B[37m";
 
     public static void main(String[] args) {
+    	
+    	ContaCorrente cc = new ContaCorrente(1, "Gabriel Souza", 1000.0);
+    	System.out.println(cc);
+
+    	ContaPoupanca cp = new ContaPoupanca(2, "Ana Silva", 0.5);
+    	System.out.println(cp);
+
         Scanner leia = new Scanner(System.in);
 
         String[] ascii = {

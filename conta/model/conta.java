@@ -1,11 +1,11 @@
 package conta.model;
 
-public class conta {
+public class Conta {
     private int numero;
     private String titular;
     private double saldo;
 
-    public conta(int numero, String titular) {
+    public Conta(int numero, String titular) {
         this.numero = numero;
         this.titular = titular;
         this.saldo = 0.0;
@@ -31,6 +31,10 @@ public class conta {
         return saldo;
     }
 
+    protected void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
     public boolean depositar(double valor) {
         if (valor > 0) {
             saldo += valor;
@@ -49,10 +53,6 @@ public class conta {
 
     @Override
     public String toString() {
-        return "Conta{" +
-                "numero=" + numero +
-                ", titular='" + titular + '\'' +
-                ", saldo=" + saldo +
-                '}';
+        return String.format("Conta {numero=%d, titular='%s', saldo=%.2f}", numero, titular, saldo);
     }
 }
