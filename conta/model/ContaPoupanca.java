@@ -1,31 +1,27 @@
 package conta.model;
 
 public class ContaPoupanca extends Conta {
-    private double taxaJuros;
+    private float taxaJuros;
 
-    public ContaPoupanca(int numero, String titular, double taxaJuros) {
-        super(numero, titular);
+    public ContaPoupanca(int numero, String titular, float saldo, int tipo, float taxaJuros) {
+        super(numero, titular, saldo, tipo);
         this.taxaJuros = taxaJuros;
     }
 
-    public double getTaxaJuros() {
+    public float getTaxaJuros() {
         return taxaJuros;
     }
 
-    public void setTaxaJuros(double taxaJuros) {
+    public void setTaxaJuros(float taxaJuros) {
         this.taxaJuros = taxaJuros;
     }
 
     public void aplicarRendimento() {
-        setSaldo(getSaldo() + getSaldo() * (taxaJuros / 100));
-    }
-
-    protected void setSaldo(double saldo) {
-        super.setSaldo(saldo);
+        setSaldo(getSaldo() + getSaldo() * (taxaJuros / 100f));
     }
 
     @Override
     public String toString() {
-        return super.toString() + String.format(", taxaJuros=%.2f%%}", taxaJuros);
+        return super.toString() + String.format(", taxaJuros=%.2f%%", taxaJuros);
     }
 }

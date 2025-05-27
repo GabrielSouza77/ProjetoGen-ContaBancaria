@@ -1,7 +1,10 @@
 package conta;
 
+import java.util.Optional;
 import java.util.Scanner;
 
+import conta.controller.ContaController;
+import conta.model.Conta;
 import conta.model.ContaCorrente;
 import conta.model.ContaPoupanca;
 
@@ -12,14 +15,10 @@ public class Menu {
     public static final String WHITE_TEXT = "\u001B[37m";
 
     public static void main(String[] args) {
-    	
-    	ContaCorrente cc = new ContaCorrente(1, "Gabriel Souza", 1000.0);
-    	System.out.println(cc);
-
-    	ContaPoupanca cp = new ContaPoupanca(2, "Ana Silva", 0.5);
-    	System.out.println(cp);
 
         Scanner leia = new Scanner(System.in);
+        
+        ContaController contas = new ContaController();
 
         String[] ascii = {
             "⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⢻⣧⣀⣼⠇⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄",
@@ -76,35 +75,115 @@ public class Menu {
                 System.exit(0);
             }
 
-            switch (opcao) {
-                case 1:
-                    System.out.println("Criar Conta\n\n");
-                    break;
-                case 2:
-                    System.out.println("Listar todas as Contas\n\n");
-                    break;
-                case 3:
-                    System.out.println("Consultar dados da Conta - por número\n\n");
-                    break;
-                case 4:
-                    System.out.println("Atualizar dados da Conta\n\n");
-                    break;
-                case 5:
-                    System.out.println("Apagar a Conta\n\n");
-                    break;
-                case 6:
-                    System.out.println("Saque\n\n");
-                    break;
-                case 7:
-                    System.out.println("Depósito\n\n");
-                    break;
-                case 8:
-                    System.out.println("Transferência entre Contas\n\n");
-                    break;
-                default:
-                    System.out.println("\nOpção Inválida!\n");
-                    break;
-            }
+	            switch (opcao) {
+	            case 1:
+	                System.out.println("Criar Conta\n");
+
+	                System.out.println("Digite o nome do Titular:");
+	                leia.skip("\\R");
+	                String titular = leia.nextLine();
+
+	                System.out.println("Digite o tipo da conta (1 - CC | 2 - CP):");
+	                int tipo = leia.nextInt();
+
+	                System.out.println("Digite o Saldo inicial da conta:");
+	                float saldo = leia.nextFloat();
+
+	                if (tipo == 1) {
+	                    System.out.println("Digite o limite da conta:");
+	                    float limite = leia.nextFloat();
+	                    contas.cadastrar(new ContaCorrente(
+	                        contas.gerarNumero(), 
+	                        titular, 
+	                        saldo, 
+	                        tipo, 
+	                        limite
+	                    ));
+	                } else if (tipo == 2) {
+	                    System.out.println("Digite a taxa de juros (%):");
+	                    float taxaJuros = leia.nextFloat();
+	                    contas.cadastrar(new ContaPoupanca(
+	                        contas.gerarNumero(), 
+	                        titular, 
+	                        saldo, 
+	                        tipo, 
+	                        taxaJuros
+	                    ));
+	                }
+	                break;
+	            case 2:
+	                System.out.println("Listar todas as Contas\n");
+	                contas.listarTodas();
+	                break;
+	
+	            case 3:
+	                System.out.println("Consultar dados da Conta - por número\n");
+	                System.out.println("Digite o número da conta: ");
+	                int numeroConsulta = leia.nextInt();
+	                contas.procurarPorNumero(numeroConsulta);
+	                break;
+	            case 4:
+	                System.out.println("Atualizar dados da Conta\n");
+	                System.out.println("Digite o número da conta: ");
+	                int numeroAtualizar = leia.nextInt();
+
+	                Optional<Conta> conta = contas.buscarNasContas(numeroAtualizar);
+
+	                if (conta.isPresent()) {
+	                    System.out.println("Digite o nome do Titular:");
+	                    leia.skip("\\R");
+	                    String titularAtualizar = leia.nextLine();
+
+	                    int tipoAtualizar = conta.get().getTipo();
+
+	                    System.out.println("Digite o novo Saldo da conta:");
+	                    float saldoAtualizar = leia.nextFloat();
+
+	                    if (tipoAtualizar == 1) {
+	                        System.out.println("Digite o novo limite da conta:");
+	                        float limiteAtualizar = leia.nextFloat();
+	                        contas.atualizar(new ContaCorrente(
+	                            numeroAtualizar,
+	                            titularAtualizar,
+	                            saldoAtualizar,
+	                            tipoAtualizar,
+	                            limiteAtualizar
+	                        ));
+	                    } else if (tipoAtualizar == 2) {
+	                        System.out.println("Digite a nova taxa de juros (%):");
+	                        float taxaJurosAtualizar = leia.nextFloat();
+	                        contas.atualizar(new ContaPoupanca(
+	                            numeroAtualizar,
+	                            titularAtualizar,
+	                            saldoAtualizar,
+	                            tipoAtualizar,
+	                            taxaJurosAtualizar
+	                        ));
+	                    }
+	                } else {
+	                    System.out.printf("\nA conta número %d não existe!\n", numeroAtualizar);
+	                }
+	                break;
+	            case 5:
+	                System.out.println("Apagar a Conta\n");
+	                System.out.println("Digite o número da conta: ");
+	                int numeroDeletar = leia.nextInt();
+	                contas.deletar(numeroDeletar);
+	                break;
+	            case 6:
+	                System.out.println("Saque\n\n");
+	                break;
+	            case 7:
+	                System.out.println("Depósito\n\n");
+	                break;
+	            case 8:
+	                System.out.println("Transferência entre Contas\n\n");
+	                break;
+	            default:
+	                System.out.println("\nOpção Inválida!\n");
+	                break;
+	        }
+
         }
     }
 
