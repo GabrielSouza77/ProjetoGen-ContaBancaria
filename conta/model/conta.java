@@ -1,14 +1,26 @@
 package conta.model;
 
-public class conta {
+import java.text.NumberFormat;
+
+public class Conta {
     private int numero;
     private String titular;
-    private double saldo;
+    public int getTipo() {
+		return tipo;
+	}
 
-    public conta(int numero, String titular) {
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
+
+	private float saldo;
+    private int tipo;
+
+    public Conta(int numero, String titular, float saldo, int tipo) {
         this.numero = numero;
         this.titular = titular;
-        this.saldo = 0.0;
+        this.saldo = saldo;
+        this.tipo = tipo;
     }
 
     public int getNumero() {
@@ -27,11 +39,15 @@ public class conta {
         this.titular = titular;
     }
 
-    public double getSaldo() {
-        return saldo;
-    }
+    public float getSaldo() {
+		return saldo;
+	}
 
-    public boolean depositar(double valor) {
+	public void setSaldo(float saldo) {
+		this.saldo = saldo;
+	}
+
+    public boolean depositar(float valor) {
         if (valor > 0) {
             saldo += valor;
             return true;
@@ -39,7 +55,7 @@ public class conta {
         return false;
     }
 
-    public boolean sacar(double valor) {
+    public boolean sacar(float valor) {
         if (valor > 0 && valor <= saldo) {
             saldo -= valor;
             return true;
@@ -47,12 +63,24 @@ public class conta {
         return false;
     }
 
-    @Override
-    public String toString() {
-        return "Conta{" +
-                "numero=" + numero +
-                ", titular='" + titular + '\'' +
-                ", saldo=" + saldo +
-                '}';
-    }
+    public void visualizar() {
+
+		NumberFormat nfMoeda = NumberFormat.getCurrencyInstance();
+
+		String tipo = "";
+
+		switch (this.tipo) {
+		case 1 -> tipo = "Conta Corrente";
+		case 2 -> tipo = "Conta Poupança";
+		default -> tipo = "Inválido";
+		}
+
+		System.out.println("***************************************");
+		System.out.println("DADOS DA CONTA                         ");
+		System.out.println("***************************************");
+		System.out.println("Número da Conta: " + this.numero);
+		System.out.println("Tipo da Conta: " + tipo);
+		System.out.println("Titular da Conta: " + this.titular);
+		System.out.println("Saldo da Conta: " + nfMoeda.format(this.saldo));
+	}
 }
