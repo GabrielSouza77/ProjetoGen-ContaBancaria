@@ -66,10 +66,62 @@ public class ContaController implements ContaRepository{
 	}
 	
 	@Override
-	public void sacar(int numero, float valor) {}
+	public void sacar(int numero, float valor) {
+	    Optional<Conta> conta = buscarNasContas(numero);
+	    
+	    if (conta.isPresent()) {
+	        boolean sucesso = conta.get().sacar(valor);
+	        
+	        if (sucesso) {
+	            System.out.printf("\nSaque de R$ %.2f realizado com sucesso na conta %d!", valor, numero);
+	        } else {
+	            System.out.println("\nSaldo insuficiente ou valor inválido para saque!");
+	        }
+	    } else {
+	        System.out.printf("\nConta %d não encontrada!", numero);
+	    }
+	}
 
 	@Override
-	public void depositar(int numero, float valor) {}
+	public void depositar(int numero, float valor) {
+	    Optional<Conta> conta = buscarNasContas(numero);
+	    
+	    if (conta.isPresent()) {
+	        boolean sucesso = conta.get().depositar(valor);
+	        
+	        if (sucesso) {
+	            System.out.printf("\nDepósito de R$ %.2f realizado com sucesso na conta %d!", valor, numero);
+	        } else {
+	            System.out.println("\nValor de depósito inválido (deve ser positivo)!");
+	        }
+	    } else {
+	        System.out.printf("\nConta %d não encontrada!", numero);
+	    }
+	}
+
+	public void transferir(int numOrigem, int numDestino, float valor) {
+	    Optional<Conta> origem = buscarNasContas(numOrigem);
+	    Optional<Conta> destino = buscarNasContas(numDestino);
+
+	    if (origem.isEmpty() || destino.isEmpty()) {
+	        System.out.println("\nUma das contas não existe!");
+	        return;
+	    }
+
+	    if (origem.get().sacar(valor)) {
+	        if (destino.get().depositar(valor)) {
+	            System.out.printf(
+	                "\nTransferência de R$ %.2f da conta %d para %d realizada com sucesso!",
+	                valor, numOrigem, numDestino
+	            );
+	        } else {
+	            origem.get().depositar(valor);
+	            System.out.println("\nFalha na transferência: valor inválido para depósito!");
+	        }
+	    } else {
+	        System.out.println("\nSaldo insuficiente ou valor inválido para transferência!");
+	    }
+	}
 	
 	public int gerarNumero() {
 		return ++numero;

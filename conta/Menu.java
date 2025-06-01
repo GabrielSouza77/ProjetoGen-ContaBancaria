@@ -171,13 +171,30 @@ public class Menu {
 	                contas.deletar(numeroDeletar);
 	                break;
 	            case 6:
-	                System.out.println("Saque\n\n");
+	                System.out.println("Saque\n");
+	                System.out.print("Digite o número da conta: ");
+	                int numeroSaque = leia.nextInt();
+	                System.out.print("Digite o valor do saque: ");
+	                float valorSaque = leia.nextFloat();
+	                contas.sacar(numeroSaque, valorSaque);
 	                break;
 	            case 7:
-	                System.out.println("Depósito\n\n");
+	                System.out.println("Depósito\n");
+	                System.out.print("Digite o número da conta: ");
+	                int numeroDeposito = leia.nextInt();
+	                System.out.print("Digite o valor do depósito: ");
+	                float valorDeposito = leia.nextFloat();
+	                contas.depositar(numeroDeposito, valorDeposito);
 	                break;
 	            case 8:
-	                System.out.println("Transferência entre Contas\n\n");
+	                System.out.println("Transferência entre Contas\n");
+	                System.out.print("Digite o número da conta de origem: ");
+	                int numOrigem = leia.nextInt();
+	                System.out.print("Digite o número da conta de destino: ");
+	                int numDestino = leia.nextInt();
+	                System.out.print("Digite o valor da transferência: ");
+	                float valorTransferencia = leia.nextFloat();
+	                contas.transferir(numOrigem, numDestino, valorTransferencia);
 	                break;
 	            default:
 	                System.out.println("\nOpção Inválida!\n");
